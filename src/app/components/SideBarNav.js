@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components';
 
-function SideBarNav() {
+function SideBarNav( {Icon, title} ) {
   return (
-    <div>SideBarNav</div>
+    <SideBarNavContainer>
+        {Icon && <Icon fontSize="small" style={{ padding: 10 }} />}
+    </SideBarNavContainer>
   )
 }
 
 export default SideBarNav
+
+const SideBarNavContainer = styled.div`
+
+`;
+
