@@ -11,9 +11,15 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import AppsIcon from '@material-ui/icons/Apps';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AddIcon from '@material-ui/icons/AddAPhotoSharp';
+
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { db } from '../firebase';
 
 function Sidebar() {
-  return (
+    const [channels, loading, error] = useCollection(db.collection("rooms"))
+    return (
     <SidebarContainer>
         <SidebarHeader>
             <SidebarInfo>
@@ -35,9 +41,22 @@ function Sidebar() {
         <SideBarNav Icon={AppsIcon} title="Apps"/>
         <SideBarNav Icon={FileCopyIcon} title="File browser"/>
         <SideBarNav Icon={ExpandLessIcon} title="Show less"/>
+        <hr />
+        <SideBarNav Icon={ExpandMoreIcon} title="Channels" />
+        <hr />
+        <SideBarNav Icon={AddIcon} addChannelOption title="Add Channel" />
+
+        {/* show channel list */}
+        {channels?.docs.map((doc) => (
+            <SideBarNav 
+                key={doc.id}
+                id={doc.id}
+                title={doc.data().name}
+            />
+        ))}
 
     </SidebarContainer>
-  )
+    )
 }
 
 export default Sidebar;
@@ -49,6 +68,12 @@ const SidebarContainer = styled.div`
     border-top: 1px solid #49274b;
     max-width: 260px;
     margin-top: 60px;
+
+    >hr {
+        margin-top: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #413f64;
+    }
 `;
 
 const SidebarHeader = styled.div`
